@@ -1,0 +1,90 @@
+-- Database: DBS
+
+create table country
+(
+	id SERIAL PRIMARY KEY,
+    country_name VARCHAR(50) NOT NULL
+);
+
+create table player
+(
+	id SERIAL PRIMARY KEY,
+	country_id INTEGER REFERENCES country NOT NULL,
+  	sex VARCHAR(1) NOT NULL,
+	nickname VARCHAR(50) NOT NULL
+);
+
+create table dlc
+(
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
+	price REAL NOT NULL
+);
+
+create table achiavement
+(
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
+	dlc_id INTEGER REFERENCES dlc
+);
+
+create table achiavement_taking
+(
+	id SERIAL PRIMARY KEY,
+	name_id INTEGER NOT NULL,
+	earn_time TIMESTAMP DEFAULT NULL,
+	player_id INTEGER REFERENCES player DEFAULT NULL
+);
+
+create table purchase
+(
+    	id SERIAL PRIMARY KEY,
+	purchase_time TIMESTAMP NOT NULL,
+	dlc_id INTEGER REFERENCES dlc NOT NULL,
+	player_id INTEGER REFERENCES player NOT NULL
+);
+
+create table character_type
+(
+  	id SERIAL PRIMARY KEY,
+  	name VARCHAR(50) NOT NULL  
+);
+
+create table character
+(
+   	id SERIAL PRIMARY KEY,
+	character_name VARCHAR(50) NOT NULL,
+	create_time TIMESTAMP NOT NULL,
+	type INTEGER REFERENCES character_type NOT NULL,
+	player_id INTEGER REFERENCES player NOT NULL
+);
+
+create table pickup_item
+(
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  brand INTEGER DEFAULT 1 NOT NULL
+);
+
+create table stock_taking
+(
+    	id SERIAL PRIMARY KEY,
+	character_id INTEGER REFERENCES character NOT NULL,
+	pickup_item_id INTEGER REFERENCES pickup_item NOT NULL
+);
+
+create table level
+(
+	id SERIAL PRIMARY KEY,
+	level_name VARCHAR(50) NOT NULL,
+	dlc_id INTEGER REFERENCES dlc
+);
+
+create table player_statistic
+(
+	id SERIAL PRIMARY KEY,
+	playhours INTEGER NOT NULL,
+	score INTEGER NOT NULL,
+	player_id INTEGER REFERENCES player NOT NULL,
+	level_id INTEGER REFERENCES level NOT NULL
+);
